@@ -27,6 +27,6 @@ export const createUser = () => {
     },
     function (error) {
       console.log(error);
-    }
+    },
   );
 };
