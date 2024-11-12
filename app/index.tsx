@@ -15,6 +15,7 @@ import { ThemedView } from "@/components/ThemedView";
 
 import "react-native-url-polyfill/auto";
 import { router } from "expo-router";
+import CustomButton from "@/components/CustomButton";
 
 export default function App() {
   function handlePress() {
@@ -23,18 +24,14 @@ export default function App() {
 
   return (
     <SafeAreaView className="h-full">
-      <View className="my-4 mx-4">
+      <View className="m-4">
         <ThemedText type="title">Hello, world!</ThemedText>
       </View>
-      <View className="flex-1 justify-center items-center border">
-        <TouchableOpacity
-          onPress={handlePress}
-          activeOpacity={0.5}
-          className="border rounded-xl bg-blue-300 p-4"
-        >
-          <ThemedText type="subtitle">Sign In</ThemedText>
-        </TouchableOpacity>
-      </View>
+      <CustomButton
+        title="Sign In"
+        onPress={handlePress}
+        containerStyles="flex-1 justify-center items-center border"
+      />
     </SafeAreaView>
   );
 }

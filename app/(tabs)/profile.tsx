@@ -5,6 +5,7 @@ import { getAllPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
 import { ThemedText } from "@/components/ThemedText";
 import { router } from "expo-router";
+import CustomButton from "@/components/CustomButton";
 
 interface Post {
   $id: string;
@@ -46,12 +47,12 @@ const Profile = () => {
           </View>
         )}
         ListHeaderComponent={() => (
-          <View className="my-4 mx-4">
+          <View className="m-4">
             <ThemedText type="title">Profile</ThemedText>
           </View>
         )}
         ListEmptyComponent={() => (
-          <View className="my-4 mx-4">
+          <View className="m-4">
             <ThemedText>No Profile</ThemedText>
           </View>
         )}
@@ -59,9 +60,11 @@ const Profile = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
-      <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
-        <ThemedText type="title">Sign Out</ThemedText>
-      </TouchableOpacity>
+      <CustomButton
+        title="Sign Out"
+        onPress={handlePress}
+        containerStyles="justify-center items-center"
+      />
     </SafeAreaView>
   );
 };

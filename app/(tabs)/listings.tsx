@@ -41,12 +41,12 @@ const Listings = () => {
           </View>
         )}
         ListHeaderComponent={() => (
-          <View className="my-4 mx-4">
+          <View className="m-4">
             <ThemedText type="title">Listings</ThemedText>
           </View>
         )}
         ListEmptyComponent={() => (
-          <View className="my-4 mx-4">
+          <View className="m-4">
             <ThemedText>No Listings</ThemedText>
           </View>
         )}
