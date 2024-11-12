@@ -1,9 +1,10 @@
-import { View, FlatList, RefreshControl } from "react-native";
+import { View, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAllPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
 import { ThemedText } from "@/components/ThemedText";
+import { router } from "expo-router";
 
 interface Post {
   $id: string;
@@ -27,6 +28,10 @@ const Profile = () => {
     await refetch();
     setRefreshing(false);
   };
+
+  function handlePress() {
+    router.replace("/sign-in");
+  }
 
   return (
     <SafeAreaView className="h-full">
@@ -54,6 +59,9 @@ const Profile = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
+      <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
+        <ThemedText type="title">Sign Out</ThemedText>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
