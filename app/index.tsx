@@ -1,56 +1,37 @@
-import {
-  Image,
-  StyleSheet,
-  Platform,
-  SafeAreaView,
-  View,
-  TouchableOpacity,
-  GestureResponderEvent,
-} from "react-native";
+import { SafeAreaView, View } from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 
 import "react-native-url-polyfill/auto";
 import { router } from "expo-router";
 import CustomButton from "@/components/CustomButton";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function App() {
   function handlePress() {
     router.replace("/(auth)/sign-in");
   }
 
+  const tintColor = useThemeColor({}, "tint");
+  const iconColor = useThemeColor({}, "icon");
+  const backgroundColor = useThemeColor({}, "background");
+
   return (
-    <SafeAreaView className="h-full">
+    <SafeAreaView
+      style={{
+        height: "100%",
+        backgroundColor: backgroundColor,
+      }}
+    >
       <View className="m-4">
         <ThemedText type="title">Hello, world!</ThemedText>
       </View>
       <CustomButton
         title="Sign In"
         onPress={handlePress}
-        containerStyles="flex-1 justify-center items-center border"
+        containerStyles={`flex-1 justify-center items-center border bg-[${tintColor}]`}
+        color={iconColor}
       />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-});

@@ -1,24 +1,37 @@
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import { Link, router } from "expo-router";
-import { ThemedText } from "@/components/ThemedText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/CustomButton";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 const SignUp = () => {
   const handlePress = () => {
     router.replace("/(tabs)/listings");
   };
 
+  const textColor = useThemeColor({}, "text");
+  const tintColor = useThemeColor({}, "tint");
+  const iconColor = useThemeColor({}, "icon");
+  const backgroundColor = useThemeColor({}, "background");
+
   return (
-    <SafeAreaView className="h-full">
+    <SafeAreaView
+      style={{
+        height: "100%",
+        backgroundColor: backgroundColor,
+      }}
+    >
       <CustomButton
         title="Sign Up"
         onPress={handlePress}
-        containerStyles="justify-center items-center"
+        containerStyles={`justify-center items-center ${tintColor}`}
+        color={iconColor}
       />
       <View className="m-4 justify-center items-center">
-        <Link href="/(auth)/sign-in">Already have an account? Sign in.</Link>
+        <Link href="/(auth)/sign-in" style={{ color: textColor }}>
+          Already have an account? Sign in.
+        </Link>
       </View>
     </SafeAreaView>
   );
