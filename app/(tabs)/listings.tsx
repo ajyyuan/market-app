@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { getAllPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
 import { ThemedText } from "@/components/ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 interface Post {
   $id: string;
@@ -28,8 +29,15 @@ const Listings = () => {
     setRefreshing(false);
   };
 
+  const backgroundColor = useThemeColor({}, "background");
+
   return (
-    <SafeAreaView className="h-full">
+    <SafeAreaView
+      style={{
+        height: "100%",
+        backgroundColor: backgroundColor,
+      }}
+    >
       <FlatList<Post>
         data={posts}
         keyExtractor={(item) => item.$id}

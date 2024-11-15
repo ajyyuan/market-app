@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import React from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,7 +25,7 @@ const SignIn = () => {
       <CustomButton
         title="Sign In"
         onPress={handlePress}
-        containerStyles={`justify-center items-center ${tintColor}`}
+        containerStyles={`mt-[40vh] justify-center items-center ${tintColor}`}
         color={iconColor}
       />
       <View className="m-4 justify-center items-center">

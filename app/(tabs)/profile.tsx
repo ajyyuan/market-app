@@ -6,6 +6,7 @@ import useAppwrite from "@/lib/useAppwrite";
 import { ThemedText } from "@/components/ThemedText";
 import { router } from "expo-router";
 import CustomButton from "@/components/CustomButton";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 interface Post {
   $id: string;
@@ -34,8 +35,17 @@ const Profile = () => {
     router.replace("/sign-in");
   }
 
+  const tintColor = useThemeColor({}, "tint");
+  const iconColor = useThemeColor({}, "icon");
+  const backgroundColor = useThemeColor({}, "background");
+
   return (
-    <SafeAreaView className="h-full">
+    <SafeAreaView
+      style={{
+        height: "100%",
+        backgroundColor: backgroundColor,
+      }}
+    >
       <FlatList<Post>
         data={posts}
         keyExtractor={(item) => item.$id}
@@ -63,7 +73,8 @@ const Profile = () => {
       <CustomButton
         title="Sign Out"
         onPress={handlePress}
-        containerStyles="justify-center items-center"
+        containerStyles={`justify-center items-center ${tintColor}`}
+        color={iconColor}
       />
     </SafeAreaView>
   );

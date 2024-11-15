@@ -25,7 +25,7 @@ const SignUp = () => {
       <CustomButton
         title="Sign Up"
         onPress={handlePress}
-        containerStyles={`justify-center items-center ${tintColor}`}
+        containerStyles={`mt-[40vh] justify-center items-center ${tintColor}`}
         color={iconColor}
       />
       <View className="m-4 justify-center items-center">
