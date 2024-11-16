@@ -13,10 +13,6 @@ export default function App() {
 
   if (!isLoading && isLoggedIn) return <Redirect href="/(tabs)/listings" />;
 
-  function handlePress() {
-    router.replace("/(auth)/sign-in");
-  }
-
   const tintColor = useThemeColor({}, "tint");
   const iconColor = useThemeColor({}, "icon");
   const backgroundColor = useThemeColor({}, "background");
@@ -33,7 +29,7 @@ export default function App() {
       </View>
       <CustomButton
         title="Sign In"
-        onPress={handlePress}
+        onPress={() => router.replace("/(auth)/sign-in")}
         containerStyles={`flex-1 justify-center items-center border bg-[${tintColor}]`}
         color={iconColor}
         isLoading={isLoading}

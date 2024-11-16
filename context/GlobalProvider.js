@@ -11,22 +11,26 @@ export const GlobalProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getCurrentUser()
-      .then((res) => {
-        if (res) {
-          setIsLoggedIn(true);
-          setUser(res);
-        } else {
-          setIsLoggedIn(false);
-          setUser(null);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (!user) {
+      setIsLoading(false);
+    } else {
+      getCurrentUser()
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+            setUser(res);
+          } else {
+            setIsLoggedIn(false);
+            setUser(null);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   }, []);
 
   return (

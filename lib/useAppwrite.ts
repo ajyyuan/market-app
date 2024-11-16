@@ -13,11 +13,7 @@ const useAppwrite = (fn: () => Promise<any>) => {
 
       setData(response);
     } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert("Error", error.message);
-      } else {
-        Alert.alert("Error", "An unknown error occurred.");
-      }
+      console.log(error);
     } finally {
       setIsLoading(false);
     }

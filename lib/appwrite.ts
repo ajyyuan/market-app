@@ -93,11 +93,7 @@ export const getCurrentUser = async () => {
 
     return currentUser.documents[0];
   } catch (error) {
-    if (error instanceof Error) {
-      Alert.alert("Error", error.message);
-    } else {
-      Alert.alert("Error", "An unknown error occurred.");
-    }
+    console.log(`${error}`);
   }
 };
 
@@ -109,6 +105,16 @@ export const getAllPosts = async () => {
     );
 
     return posts.documents;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const signOut = async () => {
+  try {
+    const session = await account.deleteSession("current");
+
+    return session;
   } catch (error) {
     throw new Error(`${error}`);
   }

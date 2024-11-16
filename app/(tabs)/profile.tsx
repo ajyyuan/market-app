@@ -1,12 +1,13 @@
 import { View, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getAllPosts } from "@/lib/appwrite";
+import { getAllPosts, signOut } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
 import { ThemedText } from "@/components/ThemedText";
 import { router } from "expo-router";
 import CustomButton from "@/components/CustomButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 interface Post {
   $id: string;
@@ -21,6 +22,7 @@ interface Post {
 }
 
 const Profile = () => {
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
   const { data: posts, refetch } = useAppwrite(getAllPosts);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -31,9 +33,12 @@ const Profile = () => {
     setRefreshing(false);
   };
 
-  function handlePress() {
+  const logout = async () => {
+    await signOut();
+    setUser(null);
+    setIsLoggedIn(false);
     router.replace("/sign-in");
-  }
+  };
 
   const tintColor = useThemeColor({}, "tint");
   const iconColor = useThemeColor({}, "icon");
@@ -72,7 +77,7 @@ const Profile = () => {
       />
       <CustomButton
         title="Sign Out"
-        onPress={handlePress}
+        onPress={logout}
         containerStyles={`justify-center items-center ${tintColor}`}
         color={iconColor}
       />
