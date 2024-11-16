@@ -8,6 +8,7 @@ import FormField from "@/components/FormField";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { createUser } from "@/lib/appwrite";
+import { ThemedText } from "@/components/ThemedText";
 
 const SignUp = () => {
   const { setUser, setIsLoggedIn } = useGlobalContext();
@@ -51,37 +52,47 @@ const SignUp = () => {
         backgroundColor: backgroundColor,
       }}
     >
-      <FormField
-        title="Username"
-        value={form.username}
-        handleChangeText={(e) => setForm({ ...form, username: e })}
-        placeholder="your username..."
-        containerStyles={styles.formFieldContainer}
-      />
-      <FormField
-        title="Email"
-        value={form.email}
-        handleChangeText={(e) => setForm({ ...form, email: e })}
-        placeholder="your email address..."
-        containerStyles={styles.formFieldContainer}
-      />
-      <FormField
-        title="Password"
-        value={form.password}
-        handleChangeText={(e) => setForm({ ...form, password: e })}
-        placeholder="your password..."
-        containerStyles={styles.formFieldContainer}
-      />
+      <View className="mt-[10vh]">
+        <FormField
+          title="Username"
+          value={form.username}
+          handleChangeText={(e) => setForm({ ...form, username: e })}
+          placeholder="your username..."
+          containerStyles={styles.formFieldContainer}
+        />
+        <FormField
+          title="Email"
+          value={form.email}
+          handleChangeText={(e) => setForm({ ...form, email: e })}
+          placeholder="your email address..."
+          containerStyles={styles.formFieldContainer}
+        />
+        <FormField
+          title="Password"
+          value={form.password}
+          handleChangeText={(e) => setForm({ ...form, password: e })}
+          placeholder="your password..."
+          containerStyles={styles.formFieldContainer}
+        />
+      </View>
+
       <CustomButton
         title="Sign Up"
         onPress={submit}
-        containerStyles={`mt-[40vh] justify-center items-center ${tintColor}`}
+        containerStyles={`mt-[10vh] justify-center items-center ${tintColor}`}
         color={iconColor}
         isLoading={isSubmitting}
       />
-      <View className="m-4 justify-center items-center">
-        <Link href="/(auth)/sign-in" style={{ color: textColor }}>
-          Already have an account? Sign in.
+
+      <View className="m-4 justify-center items-center flex-row gap-2">
+        <ThemedText style={{ fontSize: 14 }}>
+          Already have an account?
+        </ThemedText>
+        <Link
+          href="/(auth)/sign-in"
+          style={{ fontWeight: "bold", color: textColor }}
+        >
+          Sign in.
         </Link>
       </View>
     </SafeAreaView>

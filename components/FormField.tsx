@@ -2,6 +2,7 @@ import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ThemedText } from "./ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export type FormFieldProps = {
   title: string;
@@ -20,13 +21,16 @@ const FormField = ({
 }: FormFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const textColor = useThemeColor({}, "text");
+  const iconColor = useThemeColor({}, "icon");
+
   return (
     <View style={containerStyles}>
       <ThemedText type="subtitle">{title}</ThemedText>
 
-      <View style={styles.fieldContainer}>
+      <View style={{ ...styles.fieldContainer, borderColor: iconColor }}>
         <TextInput
-          style={styles.textInput}
+          style={{ ...styles.textInput, color: textColor }}
           value={value}
           placeholder={placeholder}
           placeholderTextColor="#7b7b8b"
@@ -49,18 +53,17 @@ const FormField = ({
 
 const styles = StyleSheet.create({
   fieldContainer: {
-    borderWidth: 2,
     width: "100%",
     height: 64,
     padding: 16,
+    borderWidth: 2,
     borderRadius: 16,
+    marginTop: 8,
     alignItems: "center",
     flexDirection: "row",
-    borderColor: "#7b7b8b",
   },
   textInput: {
     flex: 1,
-    color: "black",
     fontWeight: 600,
     fontSize: 16,
   },

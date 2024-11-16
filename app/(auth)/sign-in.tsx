@@ -8,6 +8,7 @@ import FormField from "@/components/FormField";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { getCurrentUser, signIn } from "@/lib/appwrite";
+import { ThemedText } from "@/components/ThemedText";
 
 const SignIn = () => {
   const { setUser, setIsLoggedIn } = useGlobalContext();
@@ -51,30 +52,38 @@ const SignIn = () => {
         backgroundColor: backgroundColor,
       }}
     >
-      <FormField
-        title="Email"
-        value={form.email}
-        handleChangeText={(e) => setForm({ ...form, email: e })}
-        placeholder="your email address..."
-        containerStyles={styles.formFieldContainer}
-      />
-      <FormField
-        title="Password"
-        value={form.password}
-        handleChangeText={(e) => setForm({ ...form, password: e })}
-        placeholder="your password..."
-        containerStyles={styles.formFieldContainer}
-      />
+      <View className="mt-[20vh]">
+        <FormField
+          title="Email"
+          value={form.email}
+          handleChangeText={(e) => setForm({ ...form, email: e })}
+          placeholder="your email address..."
+          containerStyles={styles.formFieldContainer}
+        />
+        <FormField
+          title="Password"
+          value={form.password}
+          handleChangeText={(e) => setForm({ ...form, password: e })}
+          placeholder="your password..."
+          containerStyles={styles.formFieldContainer}
+        />
+      </View>
+
       <CustomButton
         title="Sign In"
         onPress={submit}
-        containerStyles={`mt-[40vh] justify-center items-center ${tintColor}`}
+        containerStyles={`mt-[10vh] justify-center items-center ${tintColor}`}
         color={iconColor}
         isLoading={isSubmitting}
       />
-      <View className="m-4 justify-center items-center">
-        <Link href="/(auth)/sign-up" style={{ color: textColor }}>
-          New user? Create an account.
+
+      <View className="m-4 justify-center items-center flex-row gap-2">
+        <ThemedText style={{ fontSize: 14 }}>New user?</ThemedText>
+        <Link
+          href="/(auth)/sign-up"
+          style={{ fontWeight: "bold", color: textColor }}
+        >
+          Create an account.
         </Link>
       </View>
     </SafeAreaView>
