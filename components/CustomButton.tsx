@@ -5,6 +5,7 @@ import { ThemedText } from "./ThemedText";
 export type CustomButtonProps = {
   title: string;
   onPress: () => void;
+  isLoading?: boolean;
   containerStyles?: string;
   color?: string;
 };
@@ -14,6 +15,7 @@ const CustomButton = ({
   onPress,
   containerStyles,
   color,
+  isLoading,
 }: CustomButtonProps) => {
   return (
     <View className={containerStyles}>
@@ -25,7 +27,9 @@ const CustomButton = ({
           borderRadius: 12,
           backgroundColor: `${color}`,
           padding: 16,
+          opacity: isLoading ? 0.5 : 1,
         }}
+        disabled={isLoading}
       >
         <ThemedText type="subtitle">{title}</ThemedText>
       </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -6,16 +6,41 @@ import CustomButton from "@/components/CustomButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import FormField from "@/components/FormField";
 
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { getCurrentUser, signIn } from "@/lib/appwrite";
+
 const SignIn = () => {
-  // const { setUser, setIsLoggedIn } = useGlobalContext();
+  const { setUser, setIsLoggedIn } = useGlobalContext();
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handlePress = () => {
-    router.replace("/(tabs)/listings");
+  const submit = async () => {
+    if (form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    }
+
+    setIsSubmitting(true);
+    try {
+      await signIn(form.email, form.password);
+
+      const result = await getCurrentUser();
+
+      setUser(result);
+      setIsLoggedIn(true);
+
+      router.replace("/(tabs)/listings");
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert("Error", error.message);
+      } else {
+        Alert.alert("Error", "An unknown error occurred.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const textColor = useThemeColor({}, "text");
@@ -46,9 +71,10 @@ const SignIn = () => {
       />
       <CustomButton
         title="Sign In"
-        onPress={handlePress}
+        onPress={submit}
         containerStyles={`mt-[40vh] justify-center items-center ${tintColor}`}
         color={iconColor}
+        isLoading={isSubmitting}
       />
       <View className="m-4 justify-center items-center">
         <Link href="/(auth)/sign-up" style={{ color: textColor }}>

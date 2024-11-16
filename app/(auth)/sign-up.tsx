@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -6,8 +6,11 @@ import CustomButton from "@/components/CustomButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import FormField from "@/components/FormField";
 
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { createUser } from "@/lib/appwrite";
+
 const SignUp = () => {
-  // const { setUser, setIsLoggedIn } = useGlobalContext();
+  const { setUser, setIsLoggedIn } = useGlobalContext();
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -15,8 +18,29 @@ const SignUp = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handlePress = () => {
-    router.replace("/(tabs)/listings");
+  const submit = async () => {
+    if (form.username === "" || form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await createUser(form.email, form.password, form.username);
+
+      setUser(result);
+      setIsLoggedIn(true);
+
+      router.replace("/(tabs)/listings");
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert("Error", error.message);
+      } else {
+        Alert.alert("Error", "An unknown error occurred.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const textColor = useThemeColor({}, "text");
@@ -54,9 +78,10 @@ const SignUp = () => {
       />
       <CustomButton
         title="Sign Up"
-        onPress={handlePress}
+        onPress={submit}
         containerStyles={`mt-[40vh] justify-center items-center ${tintColor}`}
         color={iconColor}
+        isLoading={isSubmitting}
       />
       <View className="m-4 justify-center items-center">
         <Link href="/(auth)/sign-in" style={{ color: textColor }}>
