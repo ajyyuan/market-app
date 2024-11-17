@@ -101,7 +101,22 @@ export const getAllPosts = async () => {
   try {
     const posts = await databases.listDocuments(
       config.databaseId,
-      config.listingCollectionId
+      config.listingCollectionId,
+      [Query.orderDesc("$createdAt")]
+    );
+
+    return posts.documents;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getUserPosts = async (userId: string) => {
+  try {
+    const posts = await databases.listDocuments(
+      config.databaseId,
+      config.listingCollectionId,
+      [Query.equal("buyer", userId), Query.orderDesc("$createdAt")]
     );
 
     return posts.documents;

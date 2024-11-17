@@ -1,12 +1,22 @@
-import { View, FlatList, RefreshControl, TouchableOpacity } from "react-native";
+import {
+  View,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getAllPosts, signOut } from "@/lib/appwrite";
+import { getUserPosts, signOut } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
-import { ThemedText } from "@/components/ThemedText";
 import { router } from "expo-router";
-import CustomButton from "@/components/CustomButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+import { ThemedText } from "@/components/ThemedText";
+import CustomButton from "@/components/CustomButton";
+import InfoBox from "@/components/InfoBox";
+
 import { useGlobalContext } from "@/context/GlobalProvider";
 
 interface Post {
@@ -23,7 +33,7 @@ interface Post {
 
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
-  const { data: posts, refetch } = useAppwrite(getAllPosts);
+  const { data: posts, refetch } = useAppwrite(() => getUserPosts(user.$id));
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -62,8 +72,25 @@ const Profile = () => {
           </View>
         )}
         ListHeaderComponent={() => (
-          <View className="m-4">
-            <ThemedText type="title">Profile</ThemedText>
+          <View className="w-full justify-center items-center mt-6 mb-12 px-4">
+            <TouchableOpacity
+              className="w-full items-end mb-10"
+              onPress={logout}
+            >
+              <Ionicons name="log-out-outline" size={24} color={iconColor} />
+            </TouchableOpacity>
+            <View className="w-16 h-16 border rounded-lg justify-center items-center">
+              <Image
+                source={{ uri: user?.avatar }}
+                className="w-[95%] h-[95%] rounded-lg"
+                resizeMode="cover"
+              />
+              {/* if blocks sold > [_], show "blocks sold: ..." */}
+            </View>
+            <InfoBox title={user?.username} containerStyles="mt-4" />
+            <View className="flex-row">
+              <InfoBox title={user?.rating} subtitle="Rating" />
+            </View>
           </View>
         )}
         ListEmptyComponent={() => (

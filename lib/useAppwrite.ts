@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Alert } from "react-native";
-import { Models } from "react-native-appwrite";
 
 const useAppwrite = (fn: () => Promise<any>) => {
   const [data, setData] = useState([]);
