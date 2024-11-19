@@ -1,10 +1,4 @@
-import {
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
-  useColorScheme,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useState } from "react";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -16,6 +10,7 @@ export type DropdownFieldProps = {
   options: any[];
   setValue: (text: any) => void;
   containerStyles?: object;
+  fieldStyles?: object;
 };
 
 const DropdownField = ({
@@ -24,6 +19,7 @@ const DropdownField = ({
   options,
   setValue,
   containerStyles,
+  fieldStyles,
 }: DropdownFieldProps) => {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(options);
@@ -36,7 +32,13 @@ const DropdownField = ({
     <View style={containerStyles}>
       <ThemedText type="subtitle">{title}</ThemedText>
 
-      <View style={{ ...styles.fieldContainer, borderColor: iconColor }}>
+      <View
+        style={{
+          ...styles.fieldContainer,
+          ...fieldStyles,
+          borderColor: iconColor,
+        }}
+      >
         <DropDownPicker
           open={open}
           value={value}
@@ -45,7 +47,9 @@ const DropdownField = ({
           setValue={setValue}
           setItems={setItems}
           style={{ borderWidth: 0, backgroundColor: backgroundColor }}
+          textStyle={{ color: textColor, ...styles.textInput }}
           labelStyle={{ color: textColor }}
+          listItemContainerStyle={{ backgroundColor: backgroundColor }}
         />
       </View>
     </View>
@@ -62,6 +66,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
+  },
+  textInput: {
+    flex: 1,
+    fontWeight: 600,
+    fontSize: 16,
   },
 });
 

@@ -4,8 +4,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardTypeOptions,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native";
 import { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -19,6 +17,7 @@ export type TextFieldProps = {
   keyboardType?: KeyboardTypeOptions;
   placeholder?: string;
   containerStyles?: object;
+  fieldStyles?: object;
 };
 
 const TextField = ({
@@ -28,6 +27,7 @@ const TextField = ({
   keyboardType,
   placeholder,
   containerStyles,
+  fieldStyles,
 }: TextFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,7 +38,13 @@ const TextField = ({
     <View style={containerStyles}>
       <ThemedText type="subtitle">{title}</ThemedText>
 
-      <View style={{ ...styles.fieldContainer, borderColor: iconColor }}>
+      <View
+        style={{
+          ...styles.fieldContainer,
+          ...fieldStyles,
+          borderColor: iconColor,
+        }}
+      >
         <TextInput
           style={{ ...styles.textInput, color: textColor }}
           value={value}
@@ -66,7 +72,6 @@ const TextField = ({
 const styles = StyleSheet.create({
   fieldContainer: {
     width: "100%",
-    height: 64,
     padding: 16,
     borderWidth: 2,
     borderRadius: 16,

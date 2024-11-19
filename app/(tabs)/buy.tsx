@@ -1,10 +1,4 @@
-import {
-  Alert,
-  Keyboard,
-  ScrollView,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Alert, Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedText } from "@/components/ThemedText";
@@ -74,8 +68,8 @@ const Buy = () => {
         addOnPrice: 0,
         bid: 0,
         quantity: 1,
-        paymentMethod: "",
-        mode: "",
+        paymentMethod: "Any",
+        mode: "Remote",
       });
 
       setIsSubmitting(false);
@@ -97,66 +91,85 @@ const Buy = () => {
           <ThemedText type="title">Buy</ThemedText>
         </View>
 
-        <ScrollView className="m-4 pt-4">
+        <View className="m-4 pt-4 gap-8">
           <TextField
             title="Eatery"
             value={form.eatery}
             handleChangeText={(e) => setForm({ ...form, eatery: e })}
+            fieldStyles={{ width: "100%", height: 50 }}
           />
           <TextField
             title="Order"
             value={form.order}
             handleChangeText={(e) => setForm({ ...form, order: e })}
+            fieldStyles={{ width: "100%", height: 50 }}
           />
-          <TextField
-            title="Add-ons ($)"
-            value={form.addOnPrice.toString()}
-            handleChangeText={(e) =>
-              setForm({ ...form, addOnPrice: e === "" ? 0 : parseInt(e) })
-            }
-            keyboardType="number-pad"
-          />
-          <CurrencyField
-            title="Bid"
-            value={form.bid}
-            handleChangeText={(e) => setForm({ ...form, bid: e ?? 0 })}
-          />
-          <DropdownField
-            title="Quantity"
-            value={form.quantity}
-            options={[
-              { label: "1", value: 1 },
-              { label: "2", value: 2 },
-            ]}
-            setValue={(e) => setForm({ ...form, quantity: e(0) })}
-          />
-          <DropdownField
-            title="Payment Method"
-            value={form.paymentMethod}
-            options={[
-              { label: "Venmo", value: "Venmo" },
-              { label: "Zelle", value: "Zelle" },
-              { label: "any", value: "any" },
-            ]}
-            setValue={(e) => setForm({ ...form, paymentMethod: e(0) })}
-          />
-          <DropdownField
-            title="Mode"
-            value={form.mode}
-            options={[
-              { label: "Remote", value: "remote" },
-              { label: "In-Person", value: "in_person" },
-            ]}
-            setValue={(e) => setForm({ ...form, mode: e(0) })}
-          />
-          <CustomButton
-            title="Make bid"
-            onPress={submit}
-            isLoading={isSubmitting}
-            containerStyles={{ marginTop: 40 }}
-            color={tintColor}
-          />
-        </ScrollView>
+          <View className="flex-row gap-2 justify-between">
+            <TextField
+              title="Add-ons ($)"
+              value={form.addOnPrice.toString()}
+              handleChangeText={(e) =>
+                setForm({ ...form, addOnPrice: e === "" ? 0 : parseInt(e) })
+              }
+              keyboardType="number-pad"
+              fieldStyles={{ height: 50 }}
+            />
+            <CurrencyField
+              title="Bid"
+              value={form.bid}
+              handleChangeText={(e) => setForm({ ...form, bid: e ?? 0 })}
+              fieldStyles={{ height: 50 }}
+            />
+          </View>
+          <View className="flex-row gap-2 justify-between">
+            <DropdownField
+              title="Quantity"
+              value={form.quantity}
+              options={[
+                { label: "1", value: 1 },
+                { label: "2", value: 2 },
+              ]}
+              setValue={(e) => setForm({ ...form, quantity: e(0) })}
+              fieldStyles={{ width: "50%" }}
+            />
+            <DropdownField
+              title="Payment Method"
+              value={form.paymentMethod}
+              options={[
+                { label: "Venmo", value: "Venmo" },
+                { label: "Zelle", value: "Zelle" },
+                { label: "any", value: "any" },
+              ]}
+              setValue={(e) => setForm({ ...form, paymentMethod: e(0) })}
+              fieldStyles={{ width: "60%" }}
+            />
+          </View>
+          <View className="mt-8 flex-row">
+            <DropdownField
+              title="Mode"
+              value={form.mode}
+              options={[
+                { label: "Remote", value: "remote" },
+                { label: "In-Person", value: "in_person" },
+              ]}
+              setValue={(e) => setForm({ ...form, mode: e(0) })}
+              fieldStyles={{ width: "60%" }}
+            />
+            <View className="mr-100">
+              <CustomButton
+                title="Make bid"
+                onPress={submit}
+                isLoading={isSubmitting}
+                containerStyles={{
+                  marginTop: 40,
+                  marginRight: 8,
+                }}
+                color={tintColor}
+                textColor="lightgreen"
+              />
+            </View>
+          </View>
+        </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

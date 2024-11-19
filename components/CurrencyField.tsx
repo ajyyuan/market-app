@@ -1,11 +1,4 @@
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  KeyboardTypeOptions,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import CurrencyInput from "react-native-currency-input";
@@ -15,6 +8,7 @@ export type CurrencyFieldProps = {
   value: number;
   handleChangeText: (text: number) => void;
   containerStyles?: object;
+  fieldStyles?: object;
 };
 
 const CurrencyField = ({
@@ -22,6 +16,7 @@ const CurrencyField = ({
   value,
   handleChangeText,
   containerStyles,
+  fieldStyles,
 }: CurrencyFieldProps) => {
   const textColor = useThemeColor({}, "text");
   const iconColor = useThemeColor({}, "icon");
@@ -31,7 +26,14 @@ const CurrencyField = ({
     <View style={containerStyles}>
       <ThemedText type="subtitle">{title}</ThemedText>
 
-      <View style={{ ...styles.fieldContainer, borderColor: iconColor }}>
+      <View
+        style={{
+          ...styles.fieldContainer,
+          ...fieldStyles,
+          minWidth: "50%",
+          borderColor: iconColor,
+        }}
+      >
         <CurrencyInput
           value={value}
           onChangeValue={handleChangeText}
@@ -43,6 +45,7 @@ const CurrencyField = ({
           style={{
             backgroundColor: backgroundColor,
             color: textColor,
+            ...styles.textInput,
           }}
         />
       </View>

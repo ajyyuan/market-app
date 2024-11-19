@@ -8,14 +8,16 @@ export type CustomButtonProps = {
   isLoading?: boolean;
   containerStyles?: object;
   color?: string;
+  textColor?: string;
 };
 
 const CustomButton = ({
   title,
   onPress,
+  isLoading,
   containerStyles,
   color,
-  isLoading,
+  textColor,
 }: CustomButtonProps) => {
   return (
     <View style={containerStyles}>
@@ -31,7 +33,13 @@ const CustomButton = ({
         }}
         disabled={isLoading}
       >
-        <ThemedText type="subtitle">{title}</ThemedText>
+        {textColor ? (
+          <ThemedText type="subtitle" style={{ color: `${textColor}` }}>
+            {title}
+          </ThemedText>
+        ) : (
+          <ThemedText type="subtitle">{title}</ThemedText>
+        )}
       </TouchableOpacity>
     </View>
   );
