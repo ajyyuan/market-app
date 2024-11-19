@@ -1,10 +1,10 @@
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, useWindowDimensions, View } from "react-native";
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/CustomButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import FormField from "@/components/FormField";
+import TextField from "@/components/TextField";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { createUser } from "@/lib/appwrite";
@@ -46,6 +46,8 @@ const SignUp = () => {
   const iconColor = useThemeColor({}, "icon");
   const backgroundColor = useThemeColor({}, "background");
 
+  const { height: viewportHeight } = useWindowDimensions();
+
   return (
     <SafeAreaView
       style={{
@@ -54,33 +56,37 @@ const SignUp = () => {
       }}
     >
       <View className="mt-[10vh]">
-        <FormField
+        <TextField
           title="Username"
           value={form.username}
           handleChangeText={(e) => setForm({ ...form, username: e })}
           placeholder="your username..."
-          containerStyles={styles.formFieldContainer}
+          containerStyles={styles.textFieldContainer}
         />
-        <FormField
+        <TextField
           title="Email"
           value={form.email}
           handleChangeText={(e) => setForm({ ...form, email: e })}
           placeholder="your email address..."
-          containerStyles={styles.formFieldContainer}
+          containerStyles={styles.textFieldContainer}
         />
-        <FormField
+        <TextField
           title="Password"
           value={form.password}
           handleChangeText={(e) => setForm({ ...form, password: e })}
           placeholder="your password..."
-          containerStyles={styles.formFieldContainer}
+          containerStyles={styles.textFieldContainer}
         />
       </View>
 
       <CustomButton
         title="Sign Up"
         onPress={submit}
-        containerStyles={`mt-[10vh] justify-center items-center ${tintColor}`}
+        containerStyles={{
+          ...styles.buttonContainer,
+          marginTop: 0.1 * viewportHeight,
+          backgroundColor: backgroundColor,
+        }}
         color={iconColor}
         isLoading={isSubmitting}
       />
@@ -101,9 +107,13 @@ const SignUp = () => {
 };
 
 const styles = StyleSheet.create({
-  formFieldContainer: {
+  textFieldContainer: {
     marginHorizontal: 24,
     marginTop: 24,
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

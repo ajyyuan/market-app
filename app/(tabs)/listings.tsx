@@ -16,6 +16,7 @@ interface Post {
   createdAt: string;
   paymentMethod: string;
   mode: string;
+  buyer: string;
 }
 
 const Listings = () => {
@@ -44,7 +45,7 @@ const Listings = () => {
         renderItem={({ item }) => (
           <View className="mt-2 mx-4">
             <ThemedText>
-              {`${item.eatery}: ${item.order}, ${item.addOnPrice}, ${item.bid}, ${item.quantity}, ${item.createdAt}, ${item.paymentMethod}, ${item.mode}`}
+              {`${item.eatery}: ${item.order}, ${item.addOnPrice}, ${item.bid}, ${item.quantity}, ${item.createdAt}, ${item.paymentMethod}, ${item.mode}, ${item.buyer}`}
             </ThemedText>
           </View>
         )}

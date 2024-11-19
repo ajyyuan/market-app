@@ -1,24 +1,34 @@
-import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardTypeOptions,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
-export type FormFieldProps = {
+export type TextFieldProps = {
   title: string;
   value: string;
   handleChangeText: (text: string) => void;
+  keyboardType?: KeyboardTypeOptions;
   placeholder?: string;
   containerStyles?: object;
 };
 
-const FormField = ({
+const TextField = ({
   title,
   value,
   handleChangeText,
+  keyboardType,
   placeholder,
   containerStyles,
-}: FormFieldProps) => {
+}: TextFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const textColor = useThemeColor({}, "text");
@@ -36,6 +46,8 @@ const FormField = ({
           placeholderTextColor="#7b7b8b"
           onChangeText={handleChangeText}
           secureTextEntry={title === "Password" && !showPassword}
+          keyboardType={keyboardType}
+          returnKeyLabel="Done"
         />
 
         {title === "Password" && (
@@ -69,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormField;
+export default TextField;

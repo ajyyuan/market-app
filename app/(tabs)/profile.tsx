@@ -14,7 +14,6 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { ThemedText } from "@/components/ThemedText";
-import CustomButton from "@/components/CustomButton";
 import InfoBox from "@/components/InfoBox";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -50,7 +49,6 @@ const Profile = () => {
     router.replace("/sign-in");
   };
 
-  const tintColor = useThemeColor({}, "tint");
   const iconColor = useThemeColor({}, "icon");
   const backgroundColor = useThemeColor({}, "background");
 
@@ -101,12 +99,6 @@ const Profile = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-      />
-      <CustomButton
-        title="Sign Out"
-        onPress={logout}
-        containerStyles={`justify-center items-center ${tintColor}`}
-        color={iconColor}
       />
     </SafeAreaView>
   );

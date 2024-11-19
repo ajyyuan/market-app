@@ -6,7 +6,7 @@ export type CustomButtonProps = {
   title: string;
   onPress: () => void;
   isLoading?: boolean;
-  containerStyles?: string;
+  containerStyles?: object;
   color?: string;
 };
 
@@ -18,7 +18,7 @@ const CustomButton = ({
   isLoading,
 }: CustomButtonProps) => {
   return (
-    <View className={containerStyles}>
+    <View style={containerStyles}>
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.5}

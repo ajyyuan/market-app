@@ -1,4 +1,4 @@
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 
@@ -30,10 +30,22 @@ export default function App() {
       <CustomButton
         title="Sign In"
         onPress={() => router.replace("/(auth)/sign-in")}
-        containerStyles={`flex-1 justify-center items-center border bg-[${tintColor}]`}
+        containerStyles={{
+          ...styles.container,
+          backgroundColor: backgroundColor,
+        }}
         color={iconColor}
         isLoading={isLoading}
       />
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+  },
+});

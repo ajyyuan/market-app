@@ -1,4 +1,3 @@
-import { Alert } from "react-native";
 import {
   Account,
   Avatars,
@@ -130,6 +129,37 @@ export const signOut = async () => {
     const session = await account.deleteSession("current");
 
     return session;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export type createListingProps = {
+  buyer: string;
+  eatery: string;
+  order: string;
+  addOnPrice: number;
+  bid: number;
+  quantity: number;
+  paymentMethod: string;
+  mode: string;
+};
+
+export const createListing = async (form: createListingProps) => {
+  try {
+    const newPost = await databases.createDocument(
+      config.databaseId,
+      config.listingCollectionId,
+      ID.unique(),
+      {
+        ...form,
+        isOpen: true,
+        createdAt: new Date().toISOString(),
+        buyer: form.buyer,
+      }
+    );
+
+    return newPost;
   } catch (error) {
     throw new Error(`${error}`);
   }
