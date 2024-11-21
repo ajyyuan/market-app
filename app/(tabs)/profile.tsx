@@ -84,6 +84,7 @@ const Profile = () => {
                 resizeMode="cover"
               />
               {/* if blocks sold > [_], show "blocks sold: ..." */}
+              {/* MAKE A LEADERBOARD??! */}
             </View>
             <InfoBox title={user?.username} containerStyles="mt-4" />
             <View className="flex-row">
