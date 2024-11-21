@@ -5,19 +5,8 @@ import { getAllPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-
-interface Post {
-  $id: string;
-  eatery: string;
-  order: string;
-  addOnPrice: number;
-  bid: number;
-  quantity: number;
-  createdAt: string;
-  paymentMethod: string;
-  mode: string;
-  buyer: string;
-}
+import Listing from "@/components/Listing";
+import { listing_t } from "@/lib/globalTypes";
 
 const Listings = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
@@ -39,14 +28,12 @@ const Listings = () => {
         backgroundColor: backgroundColor,
       }}
     >
-      <FlatList<Post>
+      <FlatList<listing_t>
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
           <View className="mt-2 mx-4">
-            <ThemedText>
-              {`${item.eatery}: ${item.order}, ${item.addOnPrice}, ${item.bid}, ${item.quantity}, ${item.createdAt}, ${item.paymentMethod}, ${item.mode}, ${item.buyer}`}
-            </ThemedText>
+            <Listing {...item} />
           </View>
         )}
         ListHeaderComponent={() => (
