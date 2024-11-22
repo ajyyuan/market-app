@@ -1,4 +1,4 @@
-import { View, FlatList, RefreshControl } from "react-native";
+import { View, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAllPosts } from "@/lib/appwrite";
@@ -43,7 +43,16 @@ const Listings = () => {
     );
   });
 
-  const [filterOpen, setFilterOpen] = useState(true);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const resetFilters = () => {
+    setFilter({
+      paymentMethod: "",
+      minPrice: 0.01,
+      maxPrice: 30,
+      quantity: "",
+    });
+  };
 
   return (
     <SafeAreaView
@@ -102,6 +111,9 @@ const Listings = () => {
                 setValue={(e) => setFilter({ ...filter, quantity: e(0) })}
               />
             </View>
+            <TouchableOpacity onPress={resetFilters}>
+              <ThemedText>Reset filters</ThemedText>
+            </TouchableOpacity>
           </View>
         </>
       )}
