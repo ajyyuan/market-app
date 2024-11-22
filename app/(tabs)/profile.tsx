@@ -17,6 +17,7 @@ import { ThemedText } from "@/components/ThemedText";
 import InfoBox from "@/components/InfoBox";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { StarRatingDisplay } from "react-native-star-rating-widget";
 
 interface Post {
   $id: string;
@@ -88,7 +89,7 @@ const Profile = () => {
             </View>
             <InfoBox title={user?.username} containerStyles="mt-4" />
             <View className="flex-row">
-              <InfoBox title={user?.rating} subtitle="Rating" />
+              <StarRatingDisplay rating={user.rating} starSize={20} />
             </View>
           </View>
         )}
