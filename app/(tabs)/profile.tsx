@@ -18,6 +18,8 @@ import InfoBox from "@/components/InfoBox";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { StarRatingDisplay } from "react-native-star-rating-widget";
+import { listing_t } from "@/lib/globalTypes";
+import Listing from "@/components/Listing";
 
 interface Post {
   $id: string;
@@ -60,14 +62,12 @@ const Profile = () => {
         backgroundColor: backgroundColor,
       }}
     >
-      <FlatList<Post>
+      <FlatList<listing_t>
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
           <View className="mt-2 mx-4">
-            <ThemedText>
-              {`${item.eatery}: ${item.order}, ${item.addOnPrice}, ${item.bid}, ${item.quantity}, ${item.createdAt}, ${item.paymentMethod}, ${item.mode}`}
-            </ThemedText>
+            <Listing {...item} />
           </View>
         )}
         ListHeaderComponent={() => (
