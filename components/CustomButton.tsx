@@ -7,6 +7,7 @@ export type CustomButtonProps = {
   onPress: () => void;
   isLoading?: boolean;
   containerStyles?: object;
+  buttonStyles?: object;
   color?: string;
   textColor?: string;
 };
@@ -16,6 +17,7 @@ const CustomButton = ({
   onPress,
   isLoading,
   containerStyles,
+  buttonStyles,
   color,
   textColor,
 }: CustomButtonProps) => {
@@ -30,6 +32,7 @@ const CustomButton = ({
           backgroundColor: `${color}`,
           padding: 16,
           opacity: isLoading ? 0.5 : 1,
+          ...buttonStyles,
         }}
         disabled={isLoading}
       >

@@ -14,6 +14,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import CustomButton from "./CustomButton";
 
 const formatDate = (dateTime: string) => {
   const adjustedDateTime = new Date(dateTime).toLocaleString();
@@ -45,6 +46,10 @@ const Listing = ({
 }: listing_t) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState(0);
+
+  const submit = () => {
+    // request to sell
+  };
 
   const handlePress = () => {
     setIsExpanded(!isExpanded);
@@ -115,8 +120,22 @@ const Listing = ({
             </ThemedText>
           </View>
           <Animated.View style={[animatedStyle, { overflow: "hidden" }]}>
-            <View onLayout={onLayout} style={{ position: "absolute" }}>
+            <View
+              onLayout={onLayout}
+              style={{ position: "absolute", width: "100%" }}
+            >
               <ThemedText>{order}</ThemedText>
+              <CustomButton
+                title="Sell"
+                onPress={submit}
+                containerStyles={{ marginTop: 8 }}
+                buttonStyles={{
+                  paddingVertical: 4,
+                  paddingHorizontal: 8,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              />
             </View>
           </Animated.View>
           <View
