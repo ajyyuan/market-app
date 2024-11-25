@@ -6,11 +6,29 @@ export type listing_t = {
   bid: number;
   quantity: number;
   createdAt: string;
-  paymentMethod: string;
-  mode: string;
+  paymentMethod: paymentMethod_t;
+  mode: mode_t;
+  status: status_t;
   buyer: user_t;
   seller: user_t;
 };
+
+export enum paymentMethod_t {
+  Venmo = "Venmo",
+  Zelle = "Zelle",
+  Any = "any",
+}
+
+export enum mode_t {
+  Remote = "remote",
+  InPerson = "in-person",
+}
+
+export enum status_t {
+  Open = "open",
+  Active = "active",
+  Closed = "closed",
+}
 
 export type user_t = {
   $id: string;

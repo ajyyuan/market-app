@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { ThemedText } from "./ThemedText";
-import { listing_t } from "@/lib/globalTypes";
+import { listing_t, status_t } from "@/lib/globalTypes";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -42,7 +42,9 @@ const Listing = ({
   createdAt,
   paymentMethod,
   mode,
+  status,
   buyer,
+  seller,
 }: listing_t) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState(0);
@@ -71,9 +73,6 @@ const Listing = ({
   });
 
   const iconColor = useThemeColor({}, "icon");
-  const backgroundColor = useThemeColor({}, "background");
-  const textColor = useThemeColor({}, "text");
-  const tintColor = useThemeColor({}, "tint");
 
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
@@ -125,17 +124,19 @@ const Listing = ({
               style={{ position: "absolute", width: "100%" }}
             >
               <ThemedText>{order}</ThemedText>
-              <CustomButton
-                title="Sell"
-                onPress={submit}
-                containerStyles={{ marginTop: 8 }}
-                buttonStyles={{
-                  paddingVertical: 4,
-                  paddingHorizontal: 8,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
+              {status === status_t.Open && (
+                <CustomButton
+                  title="Sell"
+                  onPress={submit}
+                  containerStyles={{ marginTop: 8 }}
+                  buttonStyles={{
+                    paddingVertical: 4,
+                    paddingHorizontal: 8,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                />
+              )}
             </View>
           </Animated.View>
           <View
