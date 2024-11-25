@@ -1,7 +1,19 @@
-import { Image, StyleSheet, View } from "react-native";
-import React from "react";
+import {
+  Image,
+  LayoutChangeEvent,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
 import { ThemedText } from "./ThemedText";
 import { listing_t } from "@/lib/globalTypes";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 const formatDate = (dateTime: string) => {
   const adjustedDateTime = new Date(dateTime).toLocaleString();
@@ -31,47 +43,114 @@ const Listing = ({
   mode,
   buyer,
 }: listing_t) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [height, setHeight] = useState(0);
+
+  const handlePress = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const onLayout = (event: LayoutChangeEvent) => {
+    const layoutHeight = event.nativeEvent.layout.height;
+
+    if (layoutHeight > 0 && layoutHeight !== height) {
+      setHeight(layoutHeight);
+    }
+  };
+
+  const animatedStyle = useAnimatedStyle(() => {
+    const animatedHeight = isExpanded ? withTiming(height) : withTiming(0);
+    return {
+      height: animatedHeight,
+    };
+  });
+
+  const iconColor = useThemeColor({}, "icon");
+  const backgroundColor = useThemeColor({}, "background");
+  const textColor = useThemeColor({}, "text");
+  const tintColor = useThemeColor({}, "tint");
+
   return (
-    <View style={styles.container}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <ThemedText type="subtitle">{eatery}</ThemedText>
-        <View style={styles.avatarContainer}>
-          <Image
-            source={{ uri: buyer?.avatar }}
-            style={styles.avatarImg}
-            resizeMode="cover"
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
+      <View
+        style={{
+          ...styles.container,
+          flexDirection: "row",
+          borderColor: iconColor,
+        }}
+      >
+        <View style={styles.iconContainer}>
+          <Ionicons
+            name={
+              isExpanded ? "chevron-collapse-outline" : "chevron-expand-outline"
+            }
+            size={12}
+            color={iconColor}
           />
         </View>
-      </View>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <ThemedText type="defaultSemiBold">{`\$${bid}`}</ThemedText>
-        <ThemedText type="defaultSemiBold">
-          {`(${quantity} block${quantity > 1 ? "s" : ""} + \$${addOnPrice})`}
-        </ThemedText>
-      </View>
-      <ThemedText>{order}</ThemedText>
-      {/* <ThemedText>{paymentMethod}</ThemedText> */}
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <ThemedText>{mode}</ThemedText>
-        <View style={{ flexDirection: "row" }}>
-          <ThemedText style={{ fontSize: 12 }}>
-            {formatDate(createdAt).time}
-          </ThemedText>
-          <ThemedText style={{ fontSize: 12 }}> | </ThemedText>
-          <ThemedText style={{ fontSize: 12 }}>
-            {formatDate(createdAt).date}
-          </ThemedText>
+        <View style={{ flex: 1, paddingTop: 8 }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <ThemedText type="subtitle">{eatery}</ThemedText>
+              <ThemedText>{` - ${mode}`}</ThemedText>
+            </View>
+            <View style={styles.avatarContainer}>
+              <Image
+                source={{ uri: buyer?.avatar }}
+                style={styles.avatarImg}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <ThemedText type="defaultSemiBold">{`\$${bid}`}</ThemedText>
+            <ThemedText type="defaultSemiBold">
+              {`(${quantity} block${
+                quantity > 1 ? "s" : ""
+              } + \$${addOnPrice})`}
+            </ThemedText>
+          </View>
+          <Animated.View style={[animatedStyle, { overflow: "hidden" }]}>
+            <View onLayout={onLayout} style={{ position: "absolute" }}>
+              <ThemedText>{order}</ThemedText>
+            </View>
+          </Animated.View>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <ThemedText style={{ fontSize: 12 }}>
+              {`Accepts: ${paymentMethod}`}
+            </ThemedText>
+            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+              <ThemedText style={{ fontSize: 12 }}>
+                {formatDate(createdAt).time}
+              </ThemedText>
+              <ThemedText style={{ fontSize: 12 }}> | </ThemedText>
+              <ThemedText style={{ fontSize: 12 }}>
+                {formatDate(createdAt).date}
+              </ThemedText>
+            </View>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    paddingRight: 8,
     borderWidth: 2,
     borderRadius: 16,
+  },
+  iconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 2,
   },
   avatarContainer: {
     width: 32,

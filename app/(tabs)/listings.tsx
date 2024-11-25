@@ -1,4 +1,11 @@
-import { View, FlatList, RefreshControl, TouchableOpacity } from "react-native";
+import {
+  View,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAllPosts } from "@/lib/appwrite";
@@ -61,9 +68,15 @@ const Listings = () => {
         backgroundColor: backgroundColor,
       }}
     >
-      <View className="m-4">
-        <ThemedText type="title">Listings</ThemedText>
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View className="m-4 flex-row justify-between">
+          <ThemedText type="title">Listings</ThemedText>
+          <CustomButton
+            title={filterOpen ? "Hide filters" : "Show filters"}
+            onPress={() => setFilterOpen(!filterOpen)}
+          />
+        </View>
+      </TouchableWithoutFeedback>
       {filterOpen && (
         <>
           <View className="mx-4">
@@ -117,10 +130,6 @@ const Listings = () => {
           </View>
         </>
       )}
-      <CustomButton
-        title={filterOpen ? "Hide filters" : "Show filters"}
-        onPress={() => setFilterOpen(!filterOpen)}
-      />
       <FlatList<listing_t>
         data={filteredListings}
         keyExtractor={(item) => item.$id}
