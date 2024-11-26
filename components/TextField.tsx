@@ -61,6 +61,7 @@ const TextField = ({
             <Ionicons
               name={!showPassword ? "eye-outline" : "eye-off"}
               size={24}
+              color={iconColor}
             />
           </TouchableOpacity>
         )}
