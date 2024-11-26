@@ -88,8 +88,12 @@ const Profile = () => {
               {/* MAKE A LEADERBOARD??! */}
             </View>
             <InfoBox title={user?.username} containerStyles="mt-4" />
-            <View className="flex-row">
-              <StarRatingDisplay rating={user.rating} starSize={20} />
+            <View>
+              {user?.rating ? (
+                <StarRatingDisplay rating={user.rating} starSize={20} />
+              ) : (
+                <ThemedText>No rating yet.</ThemedText>
+              )}
             </View>
           </View>
         )}
