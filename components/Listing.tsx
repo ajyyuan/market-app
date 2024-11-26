@@ -91,7 +91,7 @@ const Listing = ({
           backgroundColor:
             status === status_t.Open
               ? backgroundColor
-              : dullColor(invertColor(backgroundColor)),
+              : dullColor(backgroundColor),
         }}
       >
         <View style={styles.iconContainer}>
