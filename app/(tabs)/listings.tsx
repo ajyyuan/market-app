@@ -17,8 +17,10 @@ import { listing_t } from "@/lib/globalTypes";
 import DropdownField from "@/components/DropdownField";
 import CurrencyField from "@/components/CurrencyField";
 import CustomButton from "@/components/CustomButton";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const Listings = () => {
+  const { user } = useGlobalContext();
   const { data: posts, refetch }: { data: listing_t[]; refetch: () => void } =
     useAppwrite(getAllPosts);
 
@@ -135,7 +137,7 @@ const Listings = () => {
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
           <View className="mt-2 mx-4">
-            <Listing {...item} />
+            <Listing {...item} viewer={user} />
           </View>
         )}
         ListEmptyComponent={() => (

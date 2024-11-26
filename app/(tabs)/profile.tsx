@@ -67,7 +67,7 @@ const Profile = () => {
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
           <View className="mt-2 mx-4">
-            <Listing {...item} />
+            <Listing {...item} viewer={user} />
           </View>
         )}
         ListHeaderComponent={() => (

@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { ThemedText } from "./ThemedText";
-import { listing_t, status_t } from "@/lib/globalTypes";
+import { listing_t, status_t, user_t } from "@/lib/globalTypes";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -34,6 +34,7 @@ const formatDate = (dateTime: string) => {
 };
 
 const Listing = ({
+  viewer,
   eatery,
   order,
   addOnPrice,
@@ -45,12 +46,16 @@ const Listing = ({
   status,
   buyer,
   seller,
-}: listing_t) => {
+}: listing_t & { viewer: user_t }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState(0);
 
-  const submit = () => {
+  const requestToSell = () => {
     // request to sell
+  };
+
+  const cancel = () => {
+    // cancel
   };
 
   const handlePress = () => {
@@ -124,19 +129,32 @@ const Listing = ({
               style={{ position: "absolute", width: "100%" }}
             >
               <ThemedText>{order}</ThemedText>
-              {status === status_t.Open && (
-                <CustomButton
-                  title="Sell"
-                  onPress={submit}
-                  containerStyles={{ marginTop: 8 }}
-                  buttonStyles={{
-                    paddingVertical: 4,
-                    paddingHorizontal: 8,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                />
-              )}
+              {status === status_t.Open &&
+                (viewer.$id === buyer.$id ? (
+                  <CustomButton
+                    title="Cancel"
+                    onPress={cancel}
+                    containerStyles={{ marginTop: 8 }}
+                    buttonStyles={{
+                      paddingVertical: 4,
+                      paddingHorizontal: 8,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  />
+                ) : (
+                  <CustomButton
+                    title="Sell"
+                    onPress={requestToSell}
+                    containerStyles={{ marginTop: 8 }}
+                    buttonStyles={{
+                      paddingVertical: 4,
+                      paddingHorizontal: 8,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  />
+                ))}
             </View>
           </Animated.View>
           <View
