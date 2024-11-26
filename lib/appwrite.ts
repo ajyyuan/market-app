@@ -153,7 +153,6 @@ export const createListing = async (form: createListingProps) => {
       ID.unique(),
       {
         ...form,
-        isOpen: true,
         createdAt: new Date().toISOString(),
         buyer: form.buyer,
       }
