@@ -26,8 +26,9 @@ export enum mode_t {
 
 export enum status_t {
   Open = "open",
-  Active = "active",
-  Closed = "closed",
+  Pending = "pending",
+  Sold = "sold",
+  Canceled = "canceled",
 }
 
 export type user_t = {

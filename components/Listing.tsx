@@ -15,7 +15,7 @@ import Animated, {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import CustomButton from "./CustomButton";
-import { dullColor, invertColor } from "@/lib/colorsTools";
+import { colorNameToHex, dullColor, invertColor } from "@/lib/colorsTools";
 
 const formatDate = (dateTime: string) => {
   const adjustedDateTime = new Date(dateTime).toLocaleString();
@@ -91,6 +91,10 @@ const Listing = ({
           backgroundColor:
             status === status_t.Open
               ? backgroundColor
+              : status === status_t.Pending
+              ? dullColor(colorNameToHex("yellow"))
+              : status === status_t.Sold
+              ? dullColor(colorNameToHex("green"))
               : dullColor(backgroundColor),
         }}
       >
@@ -119,16 +123,24 @@ const Listing = ({
               />
             </View>
           </View>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <ThemedText type="defaultSemiBold">{`\$${bid}`}</ThemedText>
-            <ThemedText type="defaultSemiBold">
-              {`(${quantity} block${
-                quantity > 1 ? "s" : ""
-              } + \$${addOnPrice})`}
-            </ThemedText>
-          </View>
+          {status !== status_t.Open && !isExpanded ? (
+            <View>
+              <ThemedText style={{ fontSize: 12 }}>
+                {status.toUpperCase()}
+              </ThemedText>
+            </View>
+          ) : (
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <ThemedText type="defaultSemiBold">{`\$${bid}`}</ThemedText>
+              <ThemedText type="defaultSemiBold">
+                {`(${quantity} block${
+                  quantity > 1 ? "s" : ""
+                } + \$${addOnPrice})`}
+              </ThemedText>
+            </View>
+          )}
           <Animated.View style={[animatedStyle, { overflow: "hidden" }]}>
             <View
               onLayout={onLayout}

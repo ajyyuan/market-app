@@ -50,7 +50,8 @@ const Listings = () => {
       price <= filter.maxPrice &&
       (filter.quantity === "" ||
         listing.quantity === parseInt(filter.quantity)) &&
-      listing.status !== status_t.Closed
+      listing.status !== status_t.Sold &&
+      listing.status !== status_t.Canceled
     );
   });
 
