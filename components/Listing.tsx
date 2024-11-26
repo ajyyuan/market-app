@@ -15,6 +15,7 @@ import Animated, {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import CustomButton from "./CustomButton";
+import { dullColor, invertColor } from "@/lib/colorsTools";
 
 const formatDate = (dateTime: string) => {
   const adjustedDateTime = new Date(dateTime).toLocaleString();
@@ -78,6 +79,7 @@ const Listing = ({
   });
 
   const iconColor = useThemeColor({}, "icon");
+  const backgroundColor = useThemeColor({}, "background");
 
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
@@ -86,6 +88,10 @@ const Listing = ({
           ...styles.container,
           flexDirection: "row",
           borderColor: iconColor,
+          backgroundColor:
+            status === status_t.Open
+              ? backgroundColor
+              : dullColor(invertColor(backgroundColor)),
         }}
       >
         <View style={styles.iconContainer}>
