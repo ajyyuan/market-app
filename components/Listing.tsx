@@ -16,6 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import CustomButton from "./CustomButton";
 import { colorNameToHex, dullColor, invertColor } from "@/lib/colorsTools";
+import { router } from "expo-router";
 
 const formatDate = (dateTime: string) => {
   const adjustedDateTime = new Date(dateTime).toLocaleString();
@@ -115,13 +116,21 @@ const Listing = ({
               <ThemedText type="subtitle">{eatery}</ThemedText>
               <ThemedText>{` - ${mode}`}</ThemedText>
             </View>
-            <View style={styles.avatarContainer}>
-              <Image
-                source={{ uri: buyer?.avatar }}
-                style={styles.avatarImg}
-                resizeMode="cover"
-              />
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                const buyerAccountId = buyer?.accountId;
+                router.push(`/profile/${buyerAccountId}`);
+              }}
+              activeOpacity={0.8}
+            >
+              <View style={styles.avatarContainer}>
+                <Image
+                  source={{ uri: buyer?.avatar }}
+                  style={styles.avatarImg}
+                  resizeMode="cover"
+                />
+              </View>
+            </TouchableOpacity>
           </View>
           {status !== status_t.Open && !isExpanded ? (
             <View>

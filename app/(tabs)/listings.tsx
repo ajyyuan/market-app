@@ -21,8 +21,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 
 const Listings = () => {
   const { user } = useGlobalContext();
-  const { data: posts, refetch }: { data: listing_t[]; refetch: () => void } =
-    useAppwrite(getAllPosts);
+  const { data: posts, refetch, isLoading } = useAppwrite(getAllPosts);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -41,7 +40,7 @@ const Listings = () => {
     quantity: "",
   });
 
-  const filteredListings = posts.filter((listing) => {
+  const filteredListings = posts.filter((listing: listing_t) => {
     const price = listing.bid + listing.addOnPrice;
     return (
       (filter.paymentMethod === "" ||
@@ -145,7 +144,11 @@ const Listings = () => {
         )}
         ListEmptyComponent={() => (
           <View className="m-4">
-            <ThemedText>No Listings</ThemedText>
+            {isLoading ? (
+              <ThemedText>Loading...</ThemedText>
+            ) : (
+              <ThemedText>No Listings</ThemedText>
+            )}
           </View>
         )}
         refreshControl={

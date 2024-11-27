@@ -1,17 +1,10 @@
-import {
-  View,
-  FlatList,
-  RefreshControl,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { useState } from "react";
+import { View, FlatList, RefreshControl, Image } from "react-native";
+import { useEffect, useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getUserPosts, signOut } from "@/lib/appwrite";
+import { getUser, getUserPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
-import { router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { ThemedText } from "@/components/ThemedText";
 import InfoBox from "@/components/InfoBox";
@@ -22,12 +15,19 @@ import { listing_t } from "@/lib/globalTypes";
 import Listing from "@/components/Listing";
 
 const Profile = () => {
-  const { user, setUser, setIsLoggedIn } = useGlobalContext();
+  const { user } = useGlobalContext();
+
+  const { user: profileId } = useLocalSearchParams<{ user: string }>();
+
+  const { data: profile, isLoading: profileLoading } = useAppwrite(() =>
+    getUser(profileId)
+  );
+
   const {
     data: posts,
     refetch,
-    isLoading,
-  } = useAppwrite(() => getUserPosts(user.$id));
+    isLoading: postsLoading,
+  } = useAppwrite(() => getUserPosts(profile.$id));
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -37,14 +37,10 @@ const Profile = () => {
     setRefreshing(false);
   };
 
-  const logout = async () => {
-    await signOut();
-    setUser(null);
-    setIsLoggedIn(false);
-    router.replace("/sign-in");
-  };
+  useEffect(() => {
+    refetch();
+  }, [profile]);
 
-  const iconColor = useThemeColor({}, "icon");
   const backgroundColor = useThemeColor({}, "background");
 
   return (
@@ -64,25 +60,19 @@ const Profile = () => {
         )}
         ListHeaderComponent={() => (
           <View className="w-full justify-center items-center mt-6 mb-12 px-4">
-            <TouchableOpacity
-              className="w-full items-end mb-10"
-              onPress={logout}
-            >
-              <Ionicons name="log-out-outline" size={24} color={iconColor} />
-            </TouchableOpacity>
             <View className="w-16 h-16 border rounded-lg justify-center items-center">
               <Image
-                source={{ uri: user?.avatar }}
+                source={{ uri: profile?.avatar }}
                 className="w-[95%] h-[95%] rounded-lg"
                 resizeMode="cover"
               />
               {/* if blocks sold > [_], show "blocks sold: ..." */}
               {/* MAKE A LEADERBOARD??! */}
             </View>
-            <InfoBox title={user?.username} containerStyles="mt-4" />
+            <InfoBox title={profile?.username} containerStyles="mt-4" />
             <View>
-              {user?.rating ? (
-                <StarRatingDisplay rating={user.rating} starSize={20} />
+              {profile?.rating ? (
+                <StarRatingDisplay rating={profile.rating} starSize={20} />
               ) : (
                 <ThemedText>No rating yet.</ThemedText>
               )}
@@ -91,7 +81,7 @@ const Profile = () => {
         )}
         ListEmptyComponent={() => (
           <View className="m-4">
-            {isLoading ? (
+            {profileLoading || postsLoading ? (
               <ThemedText>Loading...</ThemedText>
             ) : (
               <ThemedText>No Listings</ThemedText>

@@ -111,6 +111,10 @@ export const getAllPosts = async () => {
 };
 
 export const getUserPosts = async (userId: string) => {
+  if (!userId) {
+    console.log("User ID is required");
+    return;
+  }
   try {
     const posts = await databases.listDocuments(
       config.databaseId,
@@ -159,6 +163,38 @@ export const createListing = async (form: createListingProps) => {
     );
 
     return newPost;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const cancelListing = async (listingId: string) => {
+  try {
+    const post = await databases.deleteDocument(
+      config.databaseId,
+      config.listingCollectionId,
+      listingId
+    );
+
+    return post;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getUser = async (userId: string) => {
+  if (!userId) {
+    console.log("User ID is required");
+    return;
+  }
+  try {
+    const user = await databases.listDocuments(
+      config.databaseId,
+      config.userCollectionId,
+      [Query.equal("accountId", userId)]
+    );
+
+    return user.documents[0];
   } catch (error) {
     throw new Error(`${error}`);
   }

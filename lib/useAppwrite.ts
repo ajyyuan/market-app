@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
-const useAppwrite = (fn: () => Promise<any>) => {
+const useAppwrite = (
+  fn: () => Promise<any>
+): { data: any; isLoading: boolean; refetch: () => Promise<any> } => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
