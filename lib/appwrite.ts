@@ -111,10 +111,6 @@ export const getAllPosts = async () => {
 };
 
 export const getUserPosts = async (userId: string) => {
-  if (!userId) {
-    console.log("User ID is required");
-    return;
-  }
   try {
     const posts = await databases.listDocuments(
       config.databaseId,
@@ -183,10 +179,6 @@ export const cancelListing = async (listingId: string) => {
 };
 
 export const getUser = async (userId: string) => {
-  if (!userId) {
-    console.log("User ID is required");
-    return;
-  }
   try {
     const user = await databases.listDocuments(
       config.databaseId,

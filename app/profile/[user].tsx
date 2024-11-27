@@ -1,5 +1,5 @@
 import { View, FlatList, RefreshControl, Image } from "react-native";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getUser, getUserPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";

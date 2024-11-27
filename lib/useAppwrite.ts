@@ -13,7 +13,7 @@ const useAppwrite = (
 
       setData(response);
     } catch (error) {
-      console.log(error);
+      throw new Error(`${error}`);
     } finally {
       setIsLoading(false);
     }
