@@ -21,8 +21,13 @@ export enum paymentMethod_t {
 
 export enum mode_t {
   Remote = "remote",
-  InPerson = "in-person",
+  InPerson = "in_person",
 }
+
+export const modeLabels: Record<mode_t, string> = {
+  [mode_t.Remote]: "Remote",
+  [mode_t.InPerson]: "In-person",
+};
 
 export enum status_t {
   Open = "open",

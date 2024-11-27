@@ -11,6 +11,7 @@ import CustomButton from "@/components/CustomButton";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import { createListing } from "@/lib/appwrite";
+import { mode_t, paymentMethod_t } from "@/lib/globalTypes";
 
 const Buy = () => {
   const { user } = useGlobalContext();
@@ -136,9 +137,9 @@ const Buy = () => {
               title="Payment Method"
               value={form.paymentMethod}
               options={[
-                { label: "Venmo", value: "Venmo" },
-                { label: "Zelle", value: "Zelle" },
-                { label: "any", value: "any" },
+                { label: "Venmo", value: paymentMethod_t.Venmo },
+                { label: "Zelle", value: paymentMethod_t.Zelle },
+                { label: "any", value: paymentMethod_t.Any },
               ]}
               setValue={(e) => setForm({ ...form, paymentMethod: e(0) })}
               fieldStyles={{ width: "60%" }}
@@ -149,8 +150,8 @@ const Buy = () => {
               title="Mode"
               value={form.mode}
               options={[
-                { label: "Remote", value: "remote" },
-                { label: "In-Person", value: "in_person" },
+                { label: "Remote", value: mode_t.Remote },
+                { label: "In-Person", value: mode_t.InPerson },
               ]}
               setValue={(e) => setForm({ ...form, mode: e(0) })}
               fieldStyles={{ width: "60%" }}

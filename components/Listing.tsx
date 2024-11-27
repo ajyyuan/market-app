@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { ThemedText } from "./ThemedText";
-import { listing_t, status_t, user_t } from "@/lib/globalTypes";
+import { listing_t, modeLabels, status_t, user_t } from "@/lib/globalTypes";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -113,8 +113,11 @@ const Listing = ({
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <View style={{ flexDirection: "row" }}>
-              <ThemedText type="subtitle">{eatery}</ThemedText>
-              <ThemedText>{` - ${mode}`}</ThemedText>
+              <ThemedText type="subtitle">{`${eatery}`}</ThemedText>
+              <ThemedText> | </ThemedText>
+              <ThemedText style={{ fontSize: 12 }}>
+                {modeLabels[mode].toUpperCase()}
+              </ThemedText>
             </View>
             <TouchableOpacity
               onPress={() => {
