@@ -35,7 +35,25 @@ export type user_t = {
   rating: number;
   accountLocked: boolean;
   totalTransactions: number;
+  chats: chat_t[];
   // anonymousMode: boolean;
+};
+
+export type chat_t = {
+  $id: string;
+  users: user_t[];
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
+  messages: message_t[];
+};
+
+export type message_t = {
+  $id: string;
+  chat: chat_t;
+  sender: user_t;
+  content: string;
+  timestamp: string;
 };
 
 export enum paymentMethod_t {
