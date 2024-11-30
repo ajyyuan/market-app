@@ -11,6 +11,18 @@ export type listing_t = {
   status: status_t;
   buyer: user_t;
   seller: user_t;
+  transaction: transaction_t;
+};
+
+export type transaction_t = {
+  $id: string;
+  listing: listing_t;
+  buyer: user_t;
+  seller: user_t;
+  amount: number;
+  sellerScreenshot: string;
+  transactionStatus: transactionStatus_t;
+  completedAt: string;
 };
 
 export enum paymentMethod_t {
@@ -34,6 +46,12 @@ export enum status_t {
   Pending = "pending",
   Sold = "sold",
   Canceled = "canceled",
+}
+
+export enum transactionStatus_t {
+  Pending = "pending",
+  Confirmed = "confirmed",
+  Disputed = "disputed",
 }
 
 export type user_t = {
