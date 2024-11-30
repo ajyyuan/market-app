@@ -8,7 +8,7 @@ export type listing_t = {
   createdAt: string;
   paymentMethod: paymentMethod_t;
   mode: mode_t;
-  status: status_t;
+  status: listingStatus_t;
   buyer: user_t;
   seller: user_t;
   transaction: transaction_t;
@@ -21,8 +21,21 @@ export type transaction_t = {
   seller: user_t;
   amount: number;
   sellerScreenshot: string;
-  transactionStatus: transactionStatus_t;
+  status: transactionStatus_t;
   completedAt: string;
+};
+
+export type user_t = {
+  $id: string;
+  username: string;
+  email: string;
+  phone: string;
+  avatar: string;
+  accountId: string;
+  rating: number;
+  accountLocked: boolean;
+  totalTransactions: number;
+  // anonymousMode: boolean;
 };
 
 export enum paymentMethod_t {
@@ -41,7 +54,7 @@ export const modeLabels: Record<mode_t, string> = {
   [mode_t.InPerson]: "In-person",
 };
 
-export enum status_t {
+export enum listingStatus_t {
   Open = "open",
   Pending = "pending",
   Sold = "sold",
@@ -53,16 +66,3 @@ export enum transactionStatus_t {
   Confirmed = "confirmed",
   Disputed = "disputed",
 }
-
-export type user_t = {
-  $id: string;
-  username: string;
-  email: string;
-  phone: string;
-  avatar: string;
-  accountId: string;
-  rating: number;
-  accountLocked: boolean;
-  totalTransactions: number;
-  anonymousMode: boolean;
-};

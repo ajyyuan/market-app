@@ -7,7 +7,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { ThemedText } from "./ThemedText";
-import { listing_t, modeLabels, status_t, user_t } from "@/lib/globalTypes";
+import {
+  listing_t,
+  modeLabels,
+  listingStatus_t,
+  user_t,
+} from "@/lib/globalTypes";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -90,11 +95,11 @@ const Listing = ({
           flexDirection: "row",
           borderColor: iconColor,
           backgroundColor:
-            status === status_t.Open
+            status === listingStatus_t.Open
               ? backgroundColor
-              : status === status_t.Pending
+              : status === listingStatus_t.Pending
               ? dullColor(colorNameToHex("yellow"))
-              : status === status_t.Sold
+              : status === listingStatus_t.Sold
               ? dullColor(colorNameToHex("green"))
               : dullColor(backgroundColor),
         }}
@@ -135,7 +140,7 @@ const Listing = ({
               </View>
             </TouchableOpacity>
           </View>
-          {status !== status_t.Open && !isExpanded ? (
+          {status !== listingStatus_t.Open && !isExpanded ? (
             <View>
               <ThemedText style={{ fontSize: 12 }}>
                 {status.toUpperCase()}
@@ -159,7 +164,7 @@ const Listing = ({
               style={{ position: "absolute", width: "100%" }}
             >
               <ThemedText>{order}</ThemedText>
-              {status === status_t.Open &&
+              {status === listingStatus_t.Open &&
                 (viewer.$id === buyer.$id ? (
                   <CustomButton
                     title="Cancel"

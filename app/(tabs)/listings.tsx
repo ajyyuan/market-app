@@ -13,7 +13,7 @@ import useAppwrite from "@/lib/useAppwrite";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import Listing from "@/components/Listing";
-import { listing_t, status_t } from "@/lib/globalTypes";
+import { listing_t, listingStatus_t } from "@/lib/globalTypes";
 import DropdownField from "@/components/DropdownField";
 import CurrencyField from "@/components/CurrencyField";
 import CustomButton from "@/components/CustomButton";
@@ -49,8 +49,8 @@ const Listings = () => {
       price <= filter.maxPrice &&
       (filter.quantity === "" ||
         listing.quantity === parseInt(filter.quantity)) &&
-      listing.status !== status_t.Sold &&
-      listing.status !== status_t.Canceled
+      listing.status !== listingStatus_t.Sold &&
+      listing.status !== listingStatus_t.Canceled
     );
   });
 
