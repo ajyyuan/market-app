@@ -20,18 +20,6 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="listings"
         options={{
           title: "Listings",
@@ -44,36 +32,24 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="buy"
-        options={{
-          title: "Buy",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "fast-food" : "fast-food-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: "Explore",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="messages"
         options={{
           title: "Messages",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "chatbox-ellipses" : "chatbox-ellipses-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="buy"
+        options={{
+          title: "Buy",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "fast-food" : "fast-food-outline"}
               color={color}
             />
           ),
