@@ -22,8 +22,9 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import CustomButton from "./CustomButton";
 import { colorNameToHex, dullColor, invertColor } from "@/lib/colorsTools";
 import { router } from "expo-router";
+import { createChat } from "@/lib/appwrite";
 
-const formatDate = (dateTime: string) => {
+export const splitDateTime = (dateTime: string) => {
   const adjustedDateTime = new Date(dateTime).toLocaleString();
 
   const firstSlashIndex = adjustedDateTime.indexOf("/");
@@ -57,8 +58,16 @@ const Listing = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState(0);
 
-  const requestToSell = () => {
+  const [requested, setRequested] = useState(false);
+
+  const requestSell = async () => {
     // request to sell
+    // CHANGE!
+    setRequested(true);
+    await createChat(viewer.accountId, buyer.accountId, "Hello!");
+    // if (requested) {
+    router.push("/messages");
+    // }
   };
 
   const cancel = () => {
@@ -179,8 +188,8 @@ const Listing = ({
                   />
                 ) : (
                   <CustomButton
-                    title="Sell"
-                    onPress={requestToSell}
+                    title={requested ? "Requested" : "Sell"}
+                    onPress={requestSell}
                     containerStyles={{ marginTop: 8 }}
                     buttonStyles={{
                       paddingVertical: 4,
@@ -188,6 +197,7 @@ const Listing = ({
                       justifyContent: "center",
                       alignItems: "center",
                     }}
+                    isLoading={requested}
                   />
                 ))}
             </View>
@@ -200,11 +210,11 @@ const Listing = ({
             </ThemedText>
             <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
               <ThemedText style={{ fontSize: 12 }}>
-                {formatDate(createdAt).time}
+                {splitDateTime(createdAt).time}
               </ThemedText>
               <ThemedText style={{ fontSize: 12 }}> | </ThemedText>
               <ThemedText style={{ fontSize: 12 }}>
-                {formatDate(createdAt).date}
+                {splitDateTime(createdAt).date}
               </ThemedText>
             </View>
           </View>

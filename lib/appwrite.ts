@@ -14,6 +14,9 @@ export const config = {
   databaseId: "672fb048001458368661",
   userCollectionId: "672fb06d0021d4003463",
   listingCollectionId: "672fbcc8001cfd981286",
+  transactionCollectionId: "674b4aec001ba3ec529b",
+  chatCollectionId: "674b6469000d968a0fb6",
+  messageCollectionId: "674b67de00318c173564",
 };
 
 // Init your React Native SDK
@@ -187,6 +190,107 @@ export const getUser = async (userId: string) => {
     );
 
     return user.documents[0];
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const createChat = async (
+  senderId: string,
+  receiverId: string,
+  message: string
+) => {
+  try {
+    console.log("start");
+    const sender = await getUser(senderId);
+    const receiver = await getUser(receiverId);
+
+    // const currentTime = new Date().toISOString();
+
+    const newSelfChat = await databases.createDocument(
+      config.databaseId,
+      config.chatCollectionId,
+      ID.unique(),
+      {
+        self1: sender.$id,
+        other1: receiver.$id,
+        lastSender: "self",
+        lastMessage: message,
+        lastMessageTime: new Date().toISOString(),
+        unreadCount: 0,
+        messages: [],
+      }
+    );
+
+    const newOtherChat = await databases.createDocument(
+      config.databaseId,
+      config.chatCollectionId,
+      ID.unique(),
+      {
+        self1: receiver.$id,
+        other1: sender.$id,
+        lastSender: "other",
+        lastMessage: message,
+        lastMessageTime: new Date().toISOString(),
+        unreadCount: 0,
+        messages: [],
+      }
+    );
+
+    await databases.updateDocument(
+      config.databaseId,
+      config.userCollectionId,
+      sender.$id,
+      {
+        chats: [...sender.chats, newSelfChat.$id],
+      }
+    );
+
+    await databases.updateDocument(
+      config.databaseId,
+      config.userCollectionId,
+      receiver.$id,
+      {
+        chats: [...receiver.chats, newOtherChat.$id],
+      }
+    );
+
+    // @todo notify the other user?
+
+    return newSelfChat;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getUserChats = async (userId: string) => {
+  try {
+    const user = await getUser(userId);
+    console.log("user:", user.username);
+
+    // const chats = user.chats;
+
+    // console.log("chats:", chats.members);
+
+    const chats = await databases.listDocuments(
+      config.databaseId,
+      config.chatCollectionId,
+      [
+        // Query.equal("self.accountId", userId),
+        Query.orderDesc("$createdAt"),
+      ]
+    );
+    // console.log("chats:", chats);
+    return chats.documents;
+
+    // const res = user.chats.sort(
+    //   (a: chat_t, b: chat_t) =>
+    //     new Date(b.lastMessageTime).getTime() -
+    //     new Date(a.lastMessageTime).getTime()
+    // );
+    // console.log("res:", res);
+
+    // return chats;
   } catch (error) {
     throw new Error(`${error}`);
   }
