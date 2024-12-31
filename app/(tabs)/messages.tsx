@@ -47,10 +47,10 @@ const Messages = () => {
           return (
             <View className="m-4">
               <View>
-                <ThemedText>{`${item.other}`}</ThemedText>
+                <ThemedText>{`${item.other1.username}`}</ThemedText>
               </View>
               <View className="flex-row justify-between">
-                <ThemedText>{item.lastMessage}</ThemedText>
+                <ThemedText>{`${item.lastSender}: ${item.lastMessage}`}</ThemedText>
                 <View
                   style={{ flexDirection: "row", justifyContent: "flex-end" }}
                 >

@@ -6,6 +6,7 @@ import {
   ID,
   Query,
 } from "react-native-appwrite";
+import { chat_t } from "./globalTypes";
 
 export const config = {
   endpoint: "https://cloud.appwrite.io/v1",
@@ -205,55 +206,42 @@ export const createChat = async (
     const sender = await getUser(senderId);
     const receiver = await getUser(receiverId);
 
-    // const currentTime = new Date().toISOString();
+    const currentTime = new Date().toISOString();
+
+    const newSelfChatId = ID.unique();
+    const newOtherChatId = ID.unique();
 
     const newSelfChat = await databases.createDocument(
       config.databaseId,
       config.chatCollectionId,
-      ID.unique(),
+      newSelfChatId,
       {
         self1: sender.$id,
         other1: receiver.$id,
         lastSender: "self",
         lastMessage: message,
-        lastMessageTime: new Date().toISOString(),
+        lastMessageTime: currentTime,
         unreadCount: 0,
         messages: [],
       }
     );
 
-    const newOtherChat = await databases.createDocument(
+    await databases.createDocument(
       config.databaseId,
       config.chatCollectionId,
-      ID.unique(),
+      newOtherChatId,
       {
         self1: receiver.$id,
         other1: sender.$id,
         lastSender: "other",
         lastMessage: message,
-        lastMessageTime: new Date().toISOString(),
+        lastMessageTime: currentTime,
         unreadCount: 0,
         messages: [],
       }
     );
 
-    await databases.updateDocument(
-      config.databaseId,
-      config.userCollectionId,
-      sender.$id,
-      {
-        chats: [...sender.chats, newSelfChat.$id],
-      }
-    );
-
-    await databases.updateDocument(
-      config.databaseId,
-      config.userCollectionId,
-      receiver.$id,
-      {
-        chats: [...receiver.chats, newOtherChat.$id],
-      }
-    );
+    console.log("created chats");
 
     // @todo notify the other user?
 
@@ -268,29 +256,13 @@ export const getUserChats = async (userId: string) => {
     const user = await getUser(userId);
     console.log("user:", user.username);
 
-    // const chats = user.chats;
-
-    // console.log("chats:", chats.members);
-
     const chats = await databases.listDocuments(
       config.databaseId,
       config.chatCollectionId,
-      [
-        // Query.equal("self.accountId", userId),
-        Query.orderDesc("$createdAt"),
-      ]
+      [Query.equal("self1", user.$id), Query.orderDesc("$createdAt")]
     );
-    // console.log("chats:", chats);
+
     return chats.documents;
-
-    // const res = user.chats.sort(
-    //   (a: chat_t, b: chat_t) =>
-    //     new Date(b.lastMessageTime).getTime() -
-    //     new Date(a.lastMessageTime).getTime()
-    // );
-    // console.log("res:", res);
-
-    // return chats;
   } catch (error) {
     throw new Error(`${error}`);
   }

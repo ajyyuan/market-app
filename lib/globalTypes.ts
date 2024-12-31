@@ -35,7 +35,6 @@ export type user_t = {
   rating: number;
   accountLocked: boolean;
   totalTransactions: number;
-  chats: chat_t[];
 };
 
 export type chat_t = {
